@@ -1,26 +1,44 @@
 import {FlatList, Image, ScrollView, StyleSheet, Text, TextInput, View} from "react-native";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 const Screen_01 = () => {
-    const categories_data = [
-        {id: 1, name: "Resort", image: require("../assets/data/resort.png")},
-        {id: 2, name: "Homestate", image: require("../assets/data/homestay.png")},
-        {id: 3, name: "Hotel", image: require("../assets/data/hotel.png")},
-        {id: 4, name: "Lodge", image: require("../assets/data/lodge.png")},
-        {id: 5, name: "Villa", image: require("../assets/data/villa.png")},
-        {id: 6, name: "Apartment", image: require("../assets/data/apartment.png")},
-        {id: 7, name: "Hostel", image: require("../assets/data/hostel.png")},
-        {id: 8, name: "Seeall", image: require("../assets/data/seeall.png")},
-    ]
-    const popular_destination_data = [
-        {id: 1, image: require("../assets/data/photo1.png")},
-        {id: 2, image: require("../assets/data/photo2.png")},
-        {id: 3, image: require("../assets/data/photo3.png")},
-        {id: 4, image: require("../assets/data/photo4.png")},
-        {id: 5, image: require("../assets/data/photo5.png")},
-    ]
-    const [categories, setCategories] = useState(categories_data);
-    const [popular_destination, setPopular_destination] = useState(popular_destination_data);
+    // const categories_data = [
+    //     {id: 1, name: "Resort", image: require("../assets/data/resort.png")},
+    //     {id: 2, name: "Homestate", image: require("../assets/data/homestay.png")},
+    //     {id: 3, name: "Hotel", image: require("../assets/data/hotel.png")},
+    //     {id: 4, name: "Lodge", image: require("../assets/data/lodge.png")},
+    //     {id: 5, name: "Villa", image: require("../assets/data/villa.png")},
+    //     {id: 6, name: "Apartment", image: require("../assets/data/apartment.png")},
+    //     {id: 7, name: "Hostel", image: require("../assets/data/hostel.png")},
+    //     {id: 8, name: "Seeall", image: require("../assets/data/seeall.png")},
+    // ]
+    // const popular_destination_data = [
+    //     {id: 1, image: require("../assets/data/photo1.png")},
+    //     {id: 2, image: require("../assets/data/photo2.png")},
+    //     {id: 3, image: require("../assets/data/photo3.png")},
+    //     {id: 4, image: require("../assets/data/photo4.png")},
+    //     {id: 5, image: require("../assets/data/photo5.png")},
+    // ]
+    useEffect(() => {
+        axios.get('https://671cad1309103098807ad126.mockapi.io/category')
+            .then(response => {
+                setCategories(response.data);
+                console.log("Categories:", response.data);
+            })
+            .catch(error => {
+                console.error("Error fetching categories:", error);
+            });
+        axios.get('https://671cad1309103098807ad126.mockapi.io/popular')
+            .then(res => {
+                setPopular_destination(res.data);
+                console.log("Popular:", res.data);
+            }).catch(err => {
+            console.error("Error fetching popular:", err);
+        })
+    }, []);
+    const [categories, setCategories] = useState([]);
+    const [popular_destination, setPopular_destination] = useState([]);
     const renderItemCategories = ({item}) => {
         return (
             <View style={{flex: 1, alignItems: "center", marginVertical: 10}}>
@@ -203,7 +221,7 @@ const Screen_01 = () => {
                     </View>
                 </View>
                 {/*    Flat list recommended*/}
-                <FlatList data={popular_destination_data.slice(3, 5)}
+                <FlatList data={popular_destination.slice(3, 5)}
                           renderItem={renderItemPopular_destination_recommend}
                           keyExtractor={(item) => item.id.toString()}
                           numColumns={2}
