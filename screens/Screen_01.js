@@ -1,5 +1,6 @@
 import {FlatList, Image, ScrollView, StyleSheet, Text, TextInput, View} from "react-native";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 const Screen_01 = () => {
     const categories_data = [
@@ -19,8 +20,29 @@ const Screen_01 = () => {
         {id: 4, image: require("../assets/data/photo4.png")},
         {id: 5, image: require("../assets/data/photo5.png")},
     ]
-    const [categories, setCategories] = useState(categories_data);
-    const [popular_destination, setPopular_destination] = useState(popular_destination_data);
+
+    const categoryAPI = "https://671cad1309103098807ad126.mockapi.io/category";
+    const popluraAPI = "https://671cad1309103098807ad126.mockapi.io/popular";
+    const [categories, setCategories] = useState([]);
+    const [popular_destination, setPopular_destination] = useState([]);
+
+    useEffect(() => {
+        axios.get(categoryAPI)
+            .then((res) => {
+                setCategories(res.data);
+                console.log(res.data)
+            }).catch((err) => {
+            console.log(err)
+        })
+        axios.get(popluraAPI)
+            .then((res) => {
+                setPopular_destination(res.data);
+                console.log(res.data)
+            }).catch((err) => {
+            console.log(err)
+        })
+    }, [])
+
     const renderItemCategories = ({item}) => {
         return (
             <View style={{flex: 1, alignItems: "center", marginVertical: 10}}>
@@ -163,7 +185,7 @@ const Screen_01 = () => {
                 {/*    FLatList Categories*/}
                 <FlatList data={categories}
                           renderItem={renderItemCategories}
-                          keyExtractor={(item) => item.name}
+                          keyExtractor={(item) => item.id}
                           numColumns={4}
                 />
                 {/*    popular destination*/}
@@ -188,7 +210,7 @@ const Screen_01 = () => {
                 {/*    Flat list popular destination*/}
                 <FlatList data={popular_destination.slice(0, 3)}
                           renderItem={renderItemPopular_destination}
-                          keyExtractor={(item) => item.id.toString()}
+                          keyExtractor={(item) => item.id}
                           numColumns={3}
                 />
                 {/*    recommended*/}
@@ -203,9 +225,9 @@ const Screen_01 = () => {
                     </View>
                 </View>
                 {/*    Flat list recommended*/}
-                <FlatList data={popular_destination_data.slice(3, 5)}
+                <FlatList data={popular_destination.slice(3, 5)}
                           renderItem={renderItemPopular_destination_recommend}
-                          keyExtractor={(item) => item.id.toString()}
+                          keyExtractor={(item) => item.id}
                           numColumns={2}
                 />
             </ScrollView>
