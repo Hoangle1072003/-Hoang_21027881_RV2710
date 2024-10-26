@@ -3,14 +3,14 @@ import {useState} from "react";
 
 const Screen_01 = () => {
     const categories_data = [
-        {name: "Resort", image: require("../assets/data/resort.png")},
-        {name: "Homestate", image: require("../assets/data/homestay.png")},
-        {name: "Hotel", image: require("../assets/data/hotel.png")},
-        {name: "Lodge", image: require("../assets/data/lodge.png")},
-        {name: "Villa", image: require("../assets/data/villa.png")},
-        {name: "Apartment", image: require("../assets/data/apartment.png")},
-        {name: "Hostel", image: require("../assets/data/hostel.png")},
-        {name: "Seeall", image: require("../assets/data/seeall.png")},
+        {id: 1, name: "Resort", image: require("../assets/data/resort.png")},
+        {id: 2, name: "Homestate", image: require("../assets/data/homestay.png")},
+        {id: 3, name: "Hotel", image: require("../assets/data/hotel.png")},
+        {id: 4, name: "Lodge", image: require("../assets/data/lodge.png")},
+        {id: 5, name: "Villa", image: require("../assets/data/villa.png")},
+        {id: 6, name: "Apartment", image: require("../assets/data/apartment.png")},
+        {id: 7, name: "Hostel", image: require("../assets/data/hostel.png")},
+        {id: 8, name: "Seeall", image: require("../assets/data/seeall.png")},
     ]
     const popular_destination_data = [
         {id: 1, image: require("../assets/data/photo1.png")},
