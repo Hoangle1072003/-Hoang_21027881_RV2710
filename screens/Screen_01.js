@@ -5,6 +5,8 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  Touchable,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { useEffect, useState } from "react";
@@ -12,8 +14,9 @@ import axios from "axios";
 import Title from "../components/title";
 import { fetchCategories } from "../services/CategoryService";
 import { fetchPopular } from "../services/PopularService";
+import { useNavigation } from "@react-navigation/native";
 const Screen_01 = ({ route }) => {
-  const { name } = route.params || {};
+  const { id, name } = route.params || {};
   // const categories_data = [
   //   { id: 1, name: "Resort", image: require("../assets/data/resort.png") },
   //   { id: 2, name: "Homestate", image: require("../assets/data/homestay.png") },
@@ -39,6 +42,7 @@ const Screen_01 = ({ route }) => {
   // const categoriesAPI = "https://671cad1309103098807ad126.mockapi.io/category";
   // const popularAPI = "https://671cad1309103098807ad126.mockapi.io/popular";
 
+  const navigation = useNavigation();
   const [categories, setCategories] = useState([]);
   const [popular, setPopular] = useState([]);
 
@@ -382,10 +386,19 @@ const Screen_01 = ({ route }) => {
           </Text>
         </View>
         <View style={styles.class_footer}>
-          <Image
-            style={styles.image_footer}
-            source={require("../assets/data/profileicon.png")}
-          />
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("Screen_profile", {
+                id: id,
+                name: name,
+              })
+            }
+          >
+            <Image
+              style={styles.image_footer}
+              source={require("../assets/data/profileicon.png")}
+            />
+          </TouchableOpacity>
           <Text
             style={{
               color: "#fff",

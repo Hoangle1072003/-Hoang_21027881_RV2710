@@ -21,4 +21,24 @@ const loginUser = async ({ email, password }) => {
   }
 };
 
-module.exports = { createUser, loginUser };
+const getUserById = async (id) => {
+  try {
+    const response = await axios.get(`/users/${id}`);
+    return response;
+  } catch (error) {
+    console.error("Axios Error:", error);
+  }
+};
+
+const updateUser = async (id, { password }) => {
+  try {
+    const userData = { password };
+    console.log("User Data being sent:", userData);
+    const response = await axios.patch(`/users/${id}`, userData);
+    return response;
+  } catch (error) {
+    console.error("Axios Error:", error);
+  }
+};
+
+module.exports = { createUser, loginUser, getUserById, updateUser };

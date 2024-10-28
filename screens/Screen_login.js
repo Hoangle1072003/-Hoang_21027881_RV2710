@@ -19,9 +19,9 @@ const Screen_login = () => {
     if (email && password) {
       try {
         const response = await loginUser({ email, password });
-        console.log(response);
-        const { name } = response.data;
-        navigation.navigate("Screen_01", { name });
+        console.log(response.data);
+        const { id, name } = response.data;
+        navigation.navigate("Screen_01", { id, name });
       } catch (error) {
         console.error("Login failed:", error);
         Alert.alert(
