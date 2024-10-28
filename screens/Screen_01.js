@@ -10,31 +10,84 @@ import {
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Title from "../components/title";
-const Screen_01 = () => {
-  const categories_data = [
-    { id: 1, name: "Resort", image: require("../assets/data/resort.png") },
-    { id: 2, name: "Homestate", image: require("../assets/data/homestay.png") },
-    { id: 3, name: "Hotel", image: require("../assets/data/hotel.png") },
-    { id: 4, name: "Lodge", image: require("../assets/data/lodge.png") },
-    { id: 5, name: "Villa", image: require("../assets/data/villa.png") },
-    {
-      id: 6,
-      name: "Apartment",
-      image: require("../assets/data/apartment.png"),
-    },
-    { id: 7, name: "Hostel", image: require("../assets/data/hostel.png") },
-    { id: 8, name: "Seeall", image: require("../assets/data/seeall.png") },
-  ];
-  const popular_destination_data = [
-    { id: 1, image: require("../assets/data/photo1.png") },
-    { id: 2, image: require("../assets/data/photo2.png") },
-    { id: 3, image: require("../assets/data/photo3.png") },
-    { id: 4, image: require("../assets/data/photo4.png") },
-    { id: 5, image: require("../assets/data/photo5.png") },
-  ];
+import { fetchCategories } from "../services/CategoryService";
+import { fetchPopular } from "../services/PopularService";
+const Screen_01 = ({ route }) => {
+  const { name } = route.params || {};
+  // const categories_data = [
+  //   { id: 1, name: "Resort", image: require("../assets/data/resort.png") },
+  //   { id: 2, name: "Homestate", image: require("../assets/data/homestay.png") },
+  //   { id: 3, name: "Hotel", image: require("../assets/data/hotel.png") },
+  //   { id: 4, name: "Lodge", image: require("../assets/data/lodge.png") },
+  //   { id: 5, name: "Villa", image: require("../assets/data/villa.png") },
+  //   {
+  //     id: 6,
+  //     name: "Apartment",
+  //     image: require("../assets/data/apartment.png"),
+  //   },
+  //   { id: 7, name: "Hostel", image: require("../assets/data/hostel.png") },
+  //   { id: 8, name: "Seeall", image: require("../assets/data/seeall.png") },
+  // ];
+  // const popular_destination_data = [
+  //   { id: 1, image: require("../assets/data/photo1.png") },
+  //   { id: 2, image: require("../assets/data/photo2.png") },
+  //   { id: 3, image: require("../assets/data/photo3.png") },
+  //   { id: 4, image: require("../assets/data/photo4.png") },
+  //   { id: 5, image: require("../assets/data/photo5.png") },
+  // ];
 
-  const [categories, setCategories] = useState(categories_data);
-  const [popular, setPopular] = useState(popular_destination_data);
+  // const categoriesAPI = "https://671cad1309103098807ad126.mockapi.io/category";
+  // const popularAPI = "https://671cad1309103098807ad126.mockapi.io/popular";
+
+  const [categories, setCategories] = useState([]);
+  const [popular, setPopular] = useState([]);
+
+  const fetchCategories_backend = async () => {
+    try {
+      const response = await fetchCategories();
+      setCategories(response);
+      console.log("categories " + response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchPopular_backend = async () => {
+    try {
+      const response = await fetchPopular();
+      setPopular(response);
+      console.log("popular " + response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // const fetchCategories = async () => {
+  //   try {
+  //     const response = await axios.get(categoriesAPI);
+  //     setCategories(response.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // const fetchPopular = async () => {
+  //   try {
+  //     const response = await axios.get(popularAPI);
+  //     setPopular(response.data);
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  useEffect(() => {
+    // fetchCategories();
+    fetchCategories_backend();
+    fetchPopular_backend();
+    // fetchPopular();
+  }, []);
+
   const renderItemCategories = ({ item }) => {
     return (
       <View
@@ -44,7 +97,7 @@ const Screen_01 = () => {
           marginTop: 10,
         }}
       >
-        <Image source={item.image} />
+        <Image source={{ uri: item.image }} style={{ width: 50, height: 50 }} />
         <Text>{item.name}</Text>
       </View>
     );
@@ -186,7 +239,7 @@ const Screen_01 = () => {
                   color: "#fff",
                 }}
               >
-                Donna Stroupe
+                {name}
               </Text>
             </View>
           </View>
@@ -232,7 +285,7 @@ const Screen_01 = () => {
         </View>
         {/* FlatList categories */}
         <FlatList
-          data={categories_data}
+          data={categories}
           renderItem={renderItemCategories}
           keyExtractor={(item) => item.id.toString()}
           numColumns={4}
@@ -265,6 +318,13 @@ const Screen_01 = () => {
             Recommend
           </Text>
         </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-around",
+            marginHorizontal: 20,
+          }}
+        ></View>
         {/* Flat list */}
         <FlatList
           data={popular.slice(3, 5)}
