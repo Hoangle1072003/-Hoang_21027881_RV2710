@@ -41,4 +41,12 @@ const updateUser = async (id, { password }) => {
   }
 };
 
-module.exports = { createUser, loginUser, getUserById, updateUser };
+const logout = async () => {
+  try {
+    const response = await axios.post("/users/logout");
+    return response;
+  } catch (error) {
+    console.error("Axios Error:", error);
+  }
+};
+module.exports = { createUser, loginUser, getUserById, updateUser, logout };

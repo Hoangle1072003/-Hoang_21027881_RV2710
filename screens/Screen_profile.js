@@ -9,9 +9,10 @@ import {
   ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { getUserById, updateUser } from "../services/UserService";
+import { getUserById, updateUser, logout } from "../services/UserService";
 import { useNavigation } from "@react-navigation/native";
-
+import Toast from "react-native-toast-message";
+import TextBox from "react-native-password-eye";
 const ScreenProfile = ({ route }) => {
   const navigation = useNavigation();
   const { id } = route.params || {};
@@ -36,14 +37,30 @@ const ScreenProfile = ({ route }) => {
     if (password) {
       updateUser(id, { password });
       setPassword("");
+      Toast.show({
+        text1: "Success",
+        text2: "Password changed successfully.",
+      });
       console.log("Password changed successfully.");
     } else {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Please fill in all fields.",
+      });
       console.log("Please fill in all fields.");
     }
   };
 
-  const handleLogout = () => {
-    Alert.alert("Logged Out", "You have been logged out.");
+  const handleLogout = async () => {
+    const response = await logout();
+
+    console.log("Logout response:", response);
+    navigation.navigate("Screen_login");
+    Toast.show({
+      text1: "Success",
+      text2: "Logged out successfully.",
+    });
   };
 
   return (
@@ -77,12 +94,23 @@ const ScreenProfile = ({ route }) => {
       </View>
 
       <Text style={styles.label}>Change Password:</Text>
-      <TextInput
+      {/* <TextInput
         style={styles.input}
         secureTextEntry
         placeholder="New Password"
         value={password}
         onChangeText={setPassword}
+      /> */}
+      <TextBox
+        placeholder="New Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        iconFamily="MaterialCommunityIcons"
+        iconAlert="alert-octagon-outline"
+        eyeColor="#5958b2"
+        containerStyles={styles.textBoxContainer}
+        inputStyle={styles.input}
       />
       <TouchableOpacity
         style={styles.changePasswordButton}

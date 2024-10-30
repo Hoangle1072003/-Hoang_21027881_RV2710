@@ -9,7 +9,8 @@ import {
 } from "react-native";
 import { loginUser } from "../services/UserService";
 import { useNavigation } from "@react-navigation/native";
-
+import Toast from "react-native-toast-message";
+import TextBox from "react-native-password-eye";
 const Screen_login = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
@@ -22,18 +23,27 @@ const Screen_login = () => {
         console.log(response.data);
         const { id, name } = response.data;
         navigation.navigate("Screen_01", { id, name });
+        Toast.show({
+          text1: "Success",
+          text2: "Logged in successfully.",
+        });
       } catch (error) {
         console.error("Login failed:", error);
-        Alert.alert(
-          "Error",
-          "Failed to log in. Please check your credentials."
-        );
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: "An error occurred. Please try again.",
+        });
       } finally {
         setEmail("");
         setPassword("");
       }
     } else {
-      Alert.alert("Error", "Please fill in all fields.");
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Please fill in all fields.",
+      });
     }
   };
 
@@ -51,12 +61,23 @@ const Screen_login = () => {
         onChangeText={setEmail}
         keyboardType="email-address"
       />
-      <TextInput
+      {/* <TextInput
         style={styles.input}
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
+      /> */}
+      <TextBox
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        iconFamily="MaterialCommunityIcons"
+        iconAlert="alert-octagon-outline"
+        eyeColor="#5958b2"
+        containerStyles={styles.textBoxContainer}
+        inputStyle={styles.input}
       />
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
@@ -89,6 +110,10 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     paddingHorizontal: 10,
   },
+  textBoxContainer: {
+    marginBottom: 15,
+  },
+
   button: {
     height: 50,
     backgroundColor: "#5958b2",

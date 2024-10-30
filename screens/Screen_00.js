@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { createUser } from "../services/UserService";
 import { useNavigation } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
+import TextBox from "react-native-password-eye";
 
 const Screen_00 = () => {
   const navigation = useNavigation();
@@ -21,11 +23,17 @@ const Screen_00 = () => {
       try {
         const response = await createUser({ email, password, name });
         console.log(response);
-        Alert.alert("Registration Successful", "You can now log in!");
+        Toast.show({
+          text1: "Success",
+          text2: "User created successfully.",
+        });
         navigation.navigate("Screen_login", { name: name });
       } catch (error) {
+        Toast.show({
+          text1: "Error",
+          text2: "An error occurred. Please try again.",
+        });
         console.error("Registration failed:", error);
-        Alert.alert("Error", "Failed to create user.");
       } finally {
         setName("");
         setEmail("");
@@ -56,12 +64,23 @@ const Screen_00 = () => {
         onChangeText={setEmail}
         keyboardType="email-address"
       />
-      <TextInput
+      {/* <TextInput
         style={styles.input}
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
+      /> */}
+      <TextBox
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        iconFamily="MaterialCommunityIcons"
+        iconAlert="alert-octagon-outline"
+        eyeColor="#5958b2"
+        containerStyles={styles.textBoxContainer}
+        inputStyle={styles.input}
       />
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={styles.buttonText}>Register</Text>
@@ -94,6 +113,10 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     paddingHorizontal: 10,
   },
+  textBoxContainer: {
+    marginBottom: 15,
+  },
+
   button: {
     height: 50,
     backgroundColor: "#5958b2",
