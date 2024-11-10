@@ -291,7 +291,7 @@ const Screen_01 = ({ route }) => {
         <FlatList
           data={categories}
           renderItem={renderItemCategories}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item?.id?.toString()}
           numColumns={4}
         />
         {/* popular */}
@@ -303,7 +303,7 @@ const Screen_01 = ({ route }) => {
         <FlatList
           data={popular.slice(0, 3)}
           renderItem={renderItemPopular}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item?.id?.toString()}
           numColumns={3}
         />
         {/* recommend */}
@@ -333,7 +333,7 @@ const Screen_01 = ({ route }) => {
         <FlatList
           data={popular.slice(3, 5)}
           renderItem={renderItemPopular01}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item?.id?.toString()}
           numColumns={2}
         />
       </ScrollView>
