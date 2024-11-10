@@ -9,10 +9,16 @@ import {
   ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { getUserById, updateUser, logout } from "../services/UserService";
+import {
+  getUserById,
+  updateUser,
+  logout,
+  removeUser,
+} from "../services/UserService";
 import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import TextBox from "react-native-password-eye";
+
 const ScreenProfile = ({ route }) => {
   const navigation = useNavigation();
   const { id } = route.params || {};
@@ -41,7 +47,6 @@ const ScreenProfile = ({ route }) => {
         text1: "Success",
         text2: "Password changed successfully.",
       });
-      setPassword("");
       console.log("Password changed successfully.");
     } else {
       Toast.show({
@@ -49,10 +54,8 @@ const ScreenProfile = ({ route }) => {
         text1: "Error",
         text2: "Please fill in all fields.",
       });
-      setPassword("");
       console.log("Please fill in all fields.");
     }
-    setPassword("");
   };
 
   const handleLogout = async () => {
@@ -64,6 +67,10 @@ const ScreenProfile = ({ route }) => {
       text1: "Success",
       text2: "Logged out successfully.",
     });
+  };
+  const handleDeactivateAccount = async () => {
+    await removeUser(id);
+    navigation.navigate("Screen_login");
   };
 
   return (
@@ -83,27 +90,19 @@ const ScreenProfile = ({ route }) => {
       <View style={styles.userInfoContainer}>
         <View style={styles.userInfoRow}>
           <Text style={styles.label}>User ID:</Text>
-          <Text style={styles.userInfo}>{user.id}</Text> {/* Display User ID */}
+          <Text style={styles.userInfo}>{user.id}</Text>
         </View>
         <View style={styles.userInfoRow}>
           <Text style={styles.label}>Name:</Text>
-          <Text style={styles.userInfo}>{user.name}</Text> {/* Display Name */}
+          <Text style={styles.userInfo}>{user.name}</Text>
         </View>
         <View style={styles.userInfoRow}>
           <Text style={styles.label}>Email:</Text>
-          <Text style={styles.userInfo}>{user.email}</Text>{" "}
-          {/* Display Email */}
+          <Text style={styles.userInfo}>{user.email}</Text>
         </View>
       </View>
 
       <Text style={styles.label}>Change Password:</Text>
-      {/* <TextInput
-        style={styles.input}
-        secureTextEntry
-        placeholder="New Password"
-        value={password}
-        onChangeText={setPassword}
-      /> */}
       <TextBox
         placeholder="New Password"
         value={password}
@@ -120,6 +119,14 @@ const ScreenProfile = ({ route }) => {
         onPress={handleChangePassword}
       >
         <Text style={styles.buttonText}>Change Password</Text>
+      </TouchableOpacity>
+
+      {/* Deactivate Account Button */}
+      <TouchableOpacity
+        style={styles.deactivateButton}
+        onPress={handleDeactivateAccount}
+      >
+        <Text style={styles.buttonText}>Deactivate Account</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
@@ -193,6 +200,13 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
+  },
+  deactivateButton: {
+    backgroundColor: "#ffcc00",
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+    marginBottom: 20,
   },
   buttonText: {
     color: "#fff",

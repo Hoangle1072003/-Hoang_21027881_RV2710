@@ -49,4 +49,20 @@ const logout = async () => {
     console.error("Axios Error:", error);
   }
 };
-module.exports = { createUser, loginUser, getUserById, updateUser, logout };
+
+let removeUser = async (id) => {
+  try {
+    const response = await axios.delete(`/users/${id}`);
+    return response;
+  } catch (error) {
+    console.error("Axios Error:", error);
+  }
+};
+module.exports = {
+  createUser,
+  loginUser,
+  getUserById,
+  updateUser,
+  logout,
+  removeUser,
+};
