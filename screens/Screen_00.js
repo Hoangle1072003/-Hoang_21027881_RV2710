@@ -64,15 +64,16 @@ const Screen_00 = () => {
         onChangeText={setEmail}
         keyboardType="email-address"
       />
-      {/* <TextInput
+      <TextInput
         style={styles.input}
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
-      /> */}
-      <TextBox
+      />
+      {/* <TextBox
         placeholder="Password"
+        placeholderTextColor
         value={password}
         onChangeText={setPassword}
         secureTextEntry
@@ -81,7 +82,7 @@ const Screen_00 = () => {
         eyeColor="#5958b2"
         containerStyles={styles.textBoxContainer}
         inputStyle={styles.input}
-      />
+      /> */}
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>

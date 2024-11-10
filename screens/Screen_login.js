@@ -27,6 +27,8 @@ const Screen_login = () => {
           text1: "Success",
           text2: "Logged in successfully.",
         });
+        setEmail("");
+        setPassword("");
       } catch (error) {
         console.error("Login failed:", error);
         Toast.show({
@@ -34,6 +36,8 @@ const Screen_login = () => {
           text1: "Error",
           text2: "An error occurred. Please try again.",
         });
+        setEmail("");
+        setPassword("");
       } finally {
         setEmail("");
         setPassword("");
@@ -48,7 +52,7 @@ const Screen_login = () => {
   };
 
   const handleBackToRegister = () => {
-    navigation.navigate("Screen_00"); // Chuyển đến màn hình đăng ký
+    navigation.navigate("Screen_00");
   };
 
   return (
@@ -61,15 +65,16 @@ const Screen_login = () => {
         onChangeText={setEmail}
         keyboardType="email-address"
       />
-      {/* <TextInput
+      <TextInput
         style={styles.input}
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
-      /> */}
-      <TextBox
+      />
+      {/* <TextBox
         placeholder="Password"
+        placeholderTextColor
         value={password}
         onChangeText={setPassword}
         secureTextEntry
@@ -78,7 +83,7 @@ const Screen_login = () => {
         eyeColor="#5958b2"
         containerStyles={styles.textBoxContainer}
         inputStyle={styles.input}
-      />
+      /> */}
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>

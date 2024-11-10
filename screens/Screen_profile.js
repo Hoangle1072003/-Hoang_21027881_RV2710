@@ -41,6 +41,7 @@ const ScreenProfile = ({ route }) => {
         text1: "Success",
         text2: "Password changed successfully.",
       });
+      setPassword("");
       console.log("Password changed successfully.");
     } else {
       Toast.show({
@@ -48,8 +49,10 @@ const ScreenProfile = ({ route }) => {
         text1: "Error",
         text2: "Please fill in all fields.",
       });
+      setPassword("");
       console.log("Please fill in all fields.");
     }
+    setPassword("");
   };
 
   const handleLogout = async () => {
